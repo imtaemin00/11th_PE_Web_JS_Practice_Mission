@@ -1,30 +1,27 @@
-interface Movie {
-  id: number;
-  title: string;
-  releaseDate: string;
-}
+import { useState } from "react";
 
-const movies: Movie[] = [
-  { id: 1, title: "오디세이", releaseDate: "2026.08.05" },
-  { id: 2, title: "토이 스토리 5", releaseDate: "2026.06.17" },
-  { id: 3, title: "극장판 짱구는 못말려", releaseDate: "2017.07.20"},
-];
-
+const MIN = 0 ;
+const MAX = 5;
 export default function App() {
+  const [count, setCount] = useState(0);
+
   return (
     <main>
-      <h1>영화 목록</h1>
-      {movies.length === 0 ? (
-        <p>표시할 영화가 없어요.</p>
-      ) : (
-        <ul>
-          {movies.map((movie) => (
-            <li key={movie.id}>
-              {movie.title} - {movie.releaseDate}
-            </li>
-          ))}
-        </ul>
-      )}
+      <h1>카운터</h1>
+      <p>현재 값: {count}</p>
+      {count < MAX && (
+      <button onClick={() => setCount((current) => current + 1)}>
+        +1
+      </button>
+     )}
+     {count > MIN && (
+      <button onClick={() => setCount((current) => current - 1)}>
+        -1
+      </button>
+     )}
+      <button onClick={() => setCount(0)}>
+        초기화
+      </button>
     </main>
   );
 }
