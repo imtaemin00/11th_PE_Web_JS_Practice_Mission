@@ -1,30 +1,28 @@
-import { createContext, useContext, useState } from "react";
-
-type StudyMode = "focus" | "break";
-
-const StudyModeContext = createContext<StudyMode>("focus");
-
-function StudyModeStatus() {
-  const studyMode = useContext(StudyModeContext);
-
-  return <p>현재 학습 모드: {studyMode}</p>;
-}
+import { useState } from "react";
+import Header from "./components/layout/header";
+import MovieGrid from "./components/movies/movie-grid";
+import Pagination from "./components/movies/pagination";
+import { movies as initialMovies } from "./data/movies";
 
 export default function App() {
-  const [studyMode, setStudyMode] = useState<StudyMode>("focus");
+  const [movies, setMovies] = useState(initialMovies);
 
-  function handleToggleStudyMode() {
-    setStudyMode((currentMode) =>
-      currentMode === "focus" ? "break" : "focus",
+  function handleToggleBookmark(movieId: number) {
+    setMovies((currentMovies) =>
+      currentMovies.map((movie) =>
+        movie.id === movieId ? { ...movie, isBookmarked: !movie.isBookmarked } : movie,
+      ),
     );
   }
 
   return (
-    <StudyModeContext value={studyMode}>
-      <StudyModeStatus />
-      <button onClick={handleToggleStudyMode}>
-        학습 모드 바꾸기
-      </button>
-    </StudyModeContext>
+    <>
+      <Header />
+      <main className="page">
+        <h2 className="page__title">영화 목록</h2>
+        <MovieGrid movies={movies} onToggleBookmark={handleToggleBookmark} />
+        <Pagination />
+      </main>
+    </>
   );
 }
